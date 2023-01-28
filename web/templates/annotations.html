@@ -1,0 +1,46 @@
+<!--
+annotations.html - Display a list of user annotation jobs with links to details for each job
+Copyright (C) 2011-2018 Vas Vasiliadis <vas@uchicago.edu>
+University of Chicago
+-->
+{% extends "base.html" %}
+{% block title %}Annotations{% endblock %}
+{% block body %}
+  {% include "header.html" %}
+  <div class="container">
+    <div class="page-header">
+      <h1>My Annotations</h1>
+    </div>
+
+    <div class="row text-right">
+      <a href="{{ url_for('annotate') }}" title="Request New Annotation">
+        <button type="button" class="btn btn-link" aria-label="Request New Annotation">
+          <i class="fa fa-plus fa-lg"></i> Request New Annotation
+        </button>
+      </a>
+    </div>
+
+    <!-- DISPLAY LIST OF ANNOTATION JOBS -->
+    <!-- reference for table: https://www.w3schools.com/html/html_tables.asp -->
+    <div class="annotations">
+      <table style="width:100%">
+        <tr>
+          <th>Request ID</th>
+          <th>Request Time</th>
+          <th>VDF File Name</th>
+          <th>Status</th>
+        </tr>
+        {% for ann in annotations %}
+        <tr>
+          <td><a href="{{ url_for('annotation_details', job_id=ann['job_id']) }}">{{ann['job_id']}}</a></td>
+          <td>{{ann['submit_time']}}</td>
+          <td>{{ann['input_file_name']}}</td>
+          <td>{{ann['job_status']}}</td>
+        </tr>
+        {% endfor %}
+        
+      </table>
+    </div>
+
+  </div> <!-- container -->
+{% endblock %}

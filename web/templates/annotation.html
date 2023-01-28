@@ -1,0 +1,46 @@
+<!--
+annotation_details.html - Display details about a user's annotation job
+Copyright (C) 2011-2018 Vas Vasiliadis <vas@uchicago.edu>
+University of Chicago
+-->
+{% extends "base.html" %}
+{% block title %}Annotation Details{% endblock %}
+{% block body %}
+  {% include "header.html" %}
+
+  <div class="container">
+    <div class="page-header">
+      <h1>Annotation Details</h1>
+    </div>
+
+    <!-- DISPLAY ANNOTATION JOB DETAILS -->
+    <!--     https://stackoverflow.com/questions/27740153/check-if-key-exists-in-a-python-dict-in-jinja2-templates -->
+    <div>
+      <ul>
+        <li><strong>Request/Job ID:</strong> {{annotation.job_id}}</li>
+        <li><strong>Status:</strong> {{annotation.job_status}}</li>
+        <li><strong>Request Time:</strong> {{annotation.submit_time}}</li>
+        <li><strong>Input filename:</strong> {{annotation.input_file_name}}</li>
+                  <!-- <li>{{is_archival}}</li> -->
+        {% if 'complete_time' in annotation %}
+          <li><strong>Complete Time:</strong> {{annotation.complete_time}}</li>
+        
+        <hr>
+        <li><strong>Results filename: </strong>
+          {% if is_archival=="upgrade" %}
+          <a href="{{ url_for('make_me_premium') }}">upgrade to Premium for download</a>
+          {% elif is_archival=="restored" %}
+          <div>file is being restored; please check back later</div>
+          {% else %}
+          <a href="{{ url_for('annotation_result', job_id=annotation['job_id'], s3_key_result_file=annotation['s3_key_result_file']) }}">download</a>
+          {% endif %}
+        </li>
+        <li><strong>Log filename: </strong><a href="{{ url_for('annotation_log', job_id=annotation['job_id'], s3_key_log_file=annotation['s3_key_log_file']) }}">view</a></li>
+        {% endif %}
+      </ul>      
+    </div>   
+    <hr />
+    <a href="{{ url_for('annotations_list') }}">&larr; back to annotations list</a>
+
+  </div> <!-- container -->
+{% endblock %}
